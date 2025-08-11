@@ -1,4 +1,4 @@
-# ANTLR GRAMMAR
+# 🧪 Laboratorio 2: Sistema de Tipos con ANTLR
 
 ### Librerias necesarias:
 
