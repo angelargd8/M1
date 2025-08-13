@@ -8,22 +8,22 @@ import sys
 
 def serializedATN():
     with StringIO() as buf:
-        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\23")
+        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\24")
         buf.write("9\4\2\t\2\4\3\t\3\4\4\t\4\3\2\3\2\7\2\13\n\2\f\2\16\2")
         buf.write("\16\13\2\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5")
         buf.write("\3\33\n\3\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4")
         buf.write("\3\4\5\4)\n\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\7\4")
-        buf.write("\64\n\4\f\4\16\4\67\13\4\3\4\2\3\6\5\2\4\6\2\5\3\3\17")
-        buf.write("\17\3\2\5\6\3\2\7\b\2B\2\f\3\2\2\2\4\32\3\2\2\2\6(\3\2")
-        buf.write("\2\2\b\13\5\4\3\2\t\13\7\17\2\2\n\b\3\2\2\2\n\t\3\2\2")
+        buf.write("\64\n\4\f\4\16\4\67\13\4\3\4\2\3\6\5\2\4\6\2\5\3\3\20")
+        buf.write("\20\3\2\5\6\3\2\7\t\2B\2\f\3\2\2\2\4\32\3\2\2\2\6(\3\2")
+        buf.write("\2\2\b\13\5\4\3\2\t\13\7\20\2\2\n\b\3\2\2\2\n\t\3\2\2")
         buf.write("\2\13\16\3\2\2\2\f\n\3\2\2\2\f\r\3\2\2\2\r\17\3\2\2\2")
-        buf.write("\16\f\3\2\2\2\17\20\7\2\2\3\20\3\3\2\2\2\21\22\7\21\2")
+        buf.write("\16\f\3\2\2\2\17\20\7\2\2\3\20\3\3\2\2\2\21\22\7\22\2")
         buf.write("\2\22\23\7\3\2\2\23\24\5\6\4\2\24\25\t\2\2\2\25\33\3\2")
         buf.write("\2\2\26\27\5\6\4\2\27\30\t\2\2\2\30\33\3\2\2\2\31\33\7")
-        buf.write("\17\2\2\32\21\3\2\2\2\32\26\3\2\2\2\32\31\3\2\2\2\33\5")
+        buf.write("\20\2\2\32\21\3\2\2\2\32\26\3\2\2\2\32\31\3\2\2\2\33\5")
         buf.write("\3\2\2\2\34\35\b\4\1\2\35\36\t\3\2\2\36)\5\6\4\13\37)")
-        buf.write("\7\13\2\2 )\7\f\2\2!)\7\r\2\2\")\7\16\2\2#)\7\21\2\2$")
-        buf.write("%\7\t\2\2%&\5\6\4\2&\'\7\n\2\2\')\3\2\2\2(\34\3\2\2\2")
+        buf.write("\7\f\2\2 )\7\r\2\2!)\7\16\2\2\")\7\17\2\2#)\7\22\2\2$")
+        buf.write("%\7\n\2\2%&\5\6\4\2&\'\7\13\2\2\')\3\2\2\2(\34\3\2\2\2")
         buf.write("(\37\3\2\2\2( \3\2\2\2(!\3\2\2\2(\"\3\2\2\2(#\3\2\2\2")
         buf.write("($\3\2\2\2)\65\3\2\2\2*+\f\f\2\2+,\7\4\2\2,\64\5\6\4\f")
         buf.write("-.\f\n\2\2./\t\4\2\2/\64\5\6\4\13\60\61\f\t\2\2\61\62")
@@ -44,12 +44,12 @@ class SimpleLangParser ( Parser ):
     sharedContextCache = PredictionContextCache()
 
     literalNames = [ "<INVALID>", "'='", "'^'", "'+'", "'-'", "'*'", "'/'", 
-                     "'('", "')'" ]
+                     "'%'", "'('", "')'" ]
 
     symbolicNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
                       "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
-                      "<INVALID>", "INT", "FLOAT", "STRING", "BOOL", "NEWLINE", 
-                      "WS", "ID", "LINE_COMMENT", "BLOCK_COMMENT" ]
+                      "<INVALID>", "<INVALID>", "INT", "FLOAT", "STRING", 
+                      "BOOL", "NEWLINE", "WS", "ID", "LINE_COMMENT", "BLOCK_COMMENT" ]
 
     RULE_prog = 0
     RULE_stat = 1
@@ -66,15 +66,16 @@ class SimpleLangParser ( Parser ):
     T__5=6
     T__6=7
     T__7=8
-    INT=9
-    FLOAT=10
-    STRING=11
-    BOOL=12
-    NEWLINE=13
-    WS=14
-    ID=15
-    LINE_COMMENT=16
-    BLOCK_COMMENT=17
+    T__8=9
+    INT=10
+    FLOAT=11
+    STRING=12
+    BOOL=13
+    NEWLINE=14
+    WS=15
+    ID=16
+    LINE_COMMENT=17
+    BLOCK_COMMENT=18
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -118,6 +119,12 @@ class SimpleLangParser ( Parser ):
             if hasattr( listener, "exitProg" ):
                 listener.exitProg(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitProg" ):
+                return visitor.visitProg(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -131,7 +138,7 @@ class SimpleLangParser ( Parser ):
             self.state = 10
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << SimpleLangParser.T__2) | (1 << SimpleLangParser.T__3) | (1 << SimpleLangParser.T__6) | (1 << SimpleLangParser.INT) | (1 << SimpleLangParser.FLOAT) | (1 << SimpleLangParser.STRING) | (1 << SimpleLangParser.BOOL) | (1 << SimpleLangParser.NEWLINE) | (1 << SimpleLangParser.ID))) != 0):
+            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << SimpleLangParser.T__2) | (1 << SimpleLangParser.T__3) | (1 << SimpleLangParser.T__7) | (1 << SimpleLangParser.INT) | (1 << SimpleLangParser.FLOAT) | (1 << SimpleLangParser.STRING) | (1 << SimpleLangParser.BOOL) | (1 << SimpleLangParser.NEWLINE) | (1 << SimpleLangParser.ID))) != 0):
                 self.state = 8
                 self._errHandler.sync(self)
                 la_ = self._interp.adaptivePredict(self._input,0,self._ctx)
@@ -194,6 +201,12 @@ class SimpleLangParser ( Parser ):
             if hasattr( listener, "exitBlank" ):
                 listener.exitBlank(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitBlank" ):
+                return visitor.visitBlank(self)
+            else:
+                return visitor.visitChildren(self)
+
 
     class AssignContext(StatContext):
 
@@ -219,6 +232,12 @@ class SimpleLangParser ( Parser ):
             if hasattr( listener, "exitAssign" ):
                 listener.exitAssign(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitAssign" ):
+                return visitor.visitAssign(self)
+            else:
+                return visitor.visitChildren(self)
+
 
     class PrintExprContext(StatContext):
 
@@ -241,6 +260,12 @@ class SimpleLangParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitPrintExpr" ):
                 listener.exitPrintExpr(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitPrintExpr" ):
+                return visitor.visitPrintExpr(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -334,6 +359,12 @@ class SimpleLangParser ( Parser ):
             if hasattr( listener, "exitFloat" ):
                 listener.exitFloat(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitFloat" ):
+                return visitor.visitFloat(self)
+            else:
+                return visitor.visitChildren(self)
+
 
     class UnarySignContext(ExprContext):
 
@@ -354,6 +385,12 @@ class SimpleLangParser ( Parser ):
             if hasattr( listener, "exitUnarySign" ):
                 listener.exitUnarySign(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitUnarySign" ):
+                return visitor.visitUnarySign(self)
+            else:
+                return visitor.visitChildren(self)
+
 
     class BoolContext(ExprContext):
 
@@ -371,6 +408,12 @@ class SimpleLangParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitBool" ):
                 listener.exitBool(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitBool" ):
+                return visitor.visitBool(self)
+            else:
+                return visitor.visitChildren(self)
 
 
     class MulDivContext(ExprContext):
@@ -395,6 +438,12 @@ class SimpleLangParser ( Parser ):
             if hasattr( listener, "exitMulDiv" ):
                 listener.exitMulDiv(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitMulDiv" ):
+                return visitor.visitMulDiv(self)
+            else:
+                return visitor.visitChildren(self)
+
 
     class AddSubContext(ExprContext):
 
@@ -418,6 +467,12 @@ class SimpleLangParser ( Parser ):
             if hasattr( listener, "exitAddSub" ):
                 listener.exitAddSub(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitAddSub" ):
+                return visitor.visitAddSub(self)
+            else:
+                return visitor.visitChildren(self)
+
 
     class VarContext(ExprContext):
 
@@ -435,6 +490,12 @@ class SimpleLangParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitVar" ):
                 listener.exitVar(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitVar" ):
+                return visitor.visitVar(self)
+            else:
+                return visitor.visitChildren(self)
 
 
     class ParensContext(ExprContext):
@@ -454,6 +515,12 @@ class SimpleLangParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitParens" ):
                 listener.exitParens(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitParens" ):
+                return visitor.visitParens(self)
+            else:
+                return visitor.visitChildren(self)
 
 
     class PowContext(ExprContext):
@@ -477,6 +544,12 @@ class SimpleLangParser ( Parser ):
             if hasattr( listener, "exitPow" ):
                 listener.exitPow(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitPow" ):
+                return visitor.visitPow(self)
+            else:
+                return visitor.visitChildren(self)
+
 
     class StringContext(ExprContext):
 
@@ -495,6 +568,12 @@ class SimpleLangParser ( Parser ):
             if hasattr( listener, "exitString" ):
                 listener.exitString(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitString" ):
+                return visitor.visitString(self)
+            else:
+                return visitor.visitChildren(self)
+
 
     class IntContext(ExprContext):
 
@@ -512,6 +591,12 @@ class SimpleLangParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitInt" ):
                 listener.exitInt(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitInt" ):
+                return visitor.visitInt(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -579,16 +664,16 @@ class SimpleLangParser ( Parser ):
                 self.state = 33
                 self.match(SimpleLangParser.ID)
                 pass
-            elif token in [SimpleLangParser.T__6]:
+            elif token in [SimpleLangParser.T__7]:
                 localctx = SimpleLangParser.ParensContext(self, localctx)
                 self._ctx = localctx
                 _prevctx = localctx
                 self.state = 34
-                self.match(SimpleLangParser.T__6)
+                self.match(SimpleLangParser.T__7)
                 self.state = 35
                 self.expr(0)
                 self.state = 36
-                self.match(SimpleLangParser.T__7)
+                self.match(SimpleLangParser.T__8)
                 pass
             else:
                 raise NoViableAltException(self)
@@ -628,7 +713,7 @@ class SimpleLangParser ( Parser ):
                         self.state = 44
                         localctx.op = self._input.LT(1)
                         _la = self._input.LA(1)
-                        if not(_la==SimpleLangParser.T__4 or _la==SimpleLangParser.T__5):
+                        if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << SimpleLangParser.T__4) | (1 << SimpleLangParser.T__5) | (1 << SimpleLangParser.T__6))) != 0)):
                             localctx.op = self._errHandler.recoverInline(self)
                         else:
                             self._errHandler.reportMatch(self)

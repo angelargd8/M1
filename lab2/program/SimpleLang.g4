@@ -13,16 +13,16 @@ stat
   ;
 
 expr
-    : <assoc=right> expr '^' expr   # Pow
-    | op=('+'|'-') expr             # UnarySign
-    | expr op=('*'|'/') expr        # MulDiv
-    | expr op=('+'|'-') expr        # AddSub
-    | INT                           # Int
-    | FLOAT                         # Float
-    | STRING                        # String
-    | BOOL                          # Bool
-    | ID                            # Var
-    | '(' expr ')'                  # Parens
+    : <assoc=right> expr '^' expr      # Pow
+    | op=('+'|'-') expr                # UnarySign
+    | expr op=('*'|'/'|'%') expr       # MulDiv
+    | expr op=('+'|'-') expr           # AddSub
+    | INT                              # Int
+    | FLOAT                            # Float
+    | STRING                           # String
+    | BOOL                             # Bool
+    | ID                               # Var
+    | '(' expr ')'                     # Parens
     ;
 
 
