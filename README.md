@@ -1,5 +1,8 @@
 # 🧪 Laboratorio 2: Sistema de Tipos con ANTLR
 
+
+Video: https://youtu.be/alI7-xitxwg 
+
 ### Librerias necesarias:
 
 ```
