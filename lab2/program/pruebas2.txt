@@ -1,0 +1,3 @@
+A = "texto" + 5  
+- "cadena"  
+true ^ 2  
