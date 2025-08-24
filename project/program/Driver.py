@@ -2,6 +2,7 @@ import sys
 from antlr4 import *
 from gen.CompiscriptLexer import CompiscriptLexer
 from gen.CompiscriptParser import CompiscriptParser
+from AstBuilder import AstBuilder
 
 def parse(argv):
     input_stream = FileStream(argv[1], encoding='utf-8')
@@ -21,8 +22,11 @@ def parse(argv):
 def main(argv):
     
     tree = parse(argv)
+    # AST - Abstract Syntax Tree
+    ast = AstBuilder().visit(tree)
+    print(ast)
 
-    # AST - Abstract Syntax Tree 
+    
     
     # tabla de simbolos - con ast o directamente sobre el parse tree recolectar declaraciones y crear ambitos, detectar redeclaraciones y forwars declarations
 

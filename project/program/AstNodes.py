@@ -3,7 +3,7 @@ from typing import List, Optional, Union, Any
 
 @dataclass
 class Program:
-    decls: List[Any]
+    statements: List[Any]
 
 @dataclass
 class VarDecl:
@@ -27,8 +27,10 @@ class FuncDecl:
 @dataclass
 class ClassDecl:
     name: str
-    methods: List[FuncDecl]
-    properties: List[VarDecl]
+    base: Optional[str] # class A : B { ... }  (puede ser None)
+    methods: List['FuncDecl']
+    properties: List['VarDecl']
+
 
 # ------------------ sentencias --------------------
 @dataclass
@@ -37,30 +39,67 @@ class Block:
 
 @dataclass
 class Assign: 
-    name: str
+    target: str
+    expr: Any
+
+@dataclass
+class ExprStmt:
+    expr: Any
+
+@dataclass
+class PrintStmt:
     expr: Any
 
 @dataclass
 class If: 
     condition: Any
-    then_branch: Any
-    else_branch: Optional[Any] = None
+    then_branch: Block
+    else_branch: Optional[Block] = None
 
 @dataclass
 class While: 
     condition: Any
-    body: Any
+    body: Block
+
+@dataclass
+class DoWhile:
+    body: Block
+    condition: Any
 
 @dataclass
 class For: 
+    body: Block
     init: Optional[Any] = None
-    condition: Any
+    condition: Optional[Any] = None
     step : Optional[Any] = None
-    body: Any
+
+@dataclass
+class Foreach:
+    name: str
+    iterable: Any
+    body: Block
+
+@dataclass
+class TryCatch:
+    try_block: Block
+    var: str
+    catch_block: Block
+
+@dataclass
+class Case:
+    expr: Any
+    statements: List[Any]
+
+@dataclass
+class Switch:
+    expr: Any
+    cases: List[Case]
+    default: List[Any]
+
 
 @dataclass
 class Return: 
-    expresion: Optional[Any] = None
+    expr: Optional[Any] = None
 
 
 @dataclass
@@ -76,34 +115,49 @@ class Continue:
 @dataclass
 class Var:
     name: str
-    type: str
+    type: Optional[str] = None
 
-    @dataclass
-    class Call: 
-        func: str
-        args: List[Any]
+@dataclass
+class Call: 
+    callee: Any    # puede ser Var/Member/etc.
+    args: List[Any]
 
-    @dataclass
-    class Member: 
-        object: Any
-        name: str
+@dataclass
+class Member: 
+    object: Any
+    name: str
 
-    @dataclass
-    class Index: 
-        seq: Any
-        index: Any
+@dataclass
+class Index: 
+    seq: Any
+    index: Any
 
-    @dataclass
-    class UnOp: 
-        op: str
-        expr: Any
+@dataclass
+class UnOp: 
+    op: str
+    expr: Any
 
-    @dataclass
-    class BinOp: 
-        left: Any
-        op: str
-        right: Any
+@dataclass
+class BinOp: 
+    left: Any
+    op: str
+    right: Any
 
+@dataclass
+class Ternary:
+    condition: Any
+    then_branch: Any
+    else_branch: Any
+
+@dataclass 
+class New:
+    class_name: str
+    args: List[Any]
+
+
+@dataclass
+class This:
+    pass
 
 # -------- Literales ---------
 
