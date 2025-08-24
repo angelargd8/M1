@@ -3,6 +3,7 @@ from antlr4 import *
 from gen.CompiscriptLexer import CompiscriptLexer
 from gen.CompiscriptParser import CompiscriptParser
 from AstBuilder import AstBuilder
+from AstVisualization import render_ast
 
 def parse(argv):
     input_stream = FileStream(argv[1], encoding='utf-8')
@@ -24,10 +25,11 @@ def main(argv):
     tree = parse(argv)
     # AST - Abstract Syntax Tree
     ast = AstBuilder().visit(tree)
-    print(ast)
+    # print(ast)
+    ast_render = render_ast(ast, "./output/ast")
+    path = "./output/ast.png"
+    print("la foto de AST esta en la carpeta output:", path)
 
-    
-    
     # tabla de simbolos - con ast o directamente sobre el parse tree recolectar declaraciones y crear ambitos, detectar redeclaraciones y forwars declarations
 
     # sistema de tipos 

@@ -1,42 +1,33 @@
 from graphviz import Digraph
 import itertools
 
-def render_ast(root, out_png="output/ast.png"):
-    dot = Digraph(graph_attr={"rankdir": "TB"})
-    counter = itertools.count()
-
-    def nid():
-        return f"n{next(counter)}"
-
-    def label(obj):
-        cls = type(obj).__name__
-        # muestra campos principales abreviados
-        if hasattr(obj, "__dict__"):
-            return f"{cls}"
-        return str(obj)
-
-    def walk(obj):
-        node_id = nid()
-        dot.node(node_id, label(obj))
-        # hijos: dataclass -> recorremos campos
-        if hasattr(obj, "__dict__"):
-            for k, v in obj.__dict__.items():
-                if v is None: continue
-                if isinstance(v, list):
-                    list_id = nid()
-                    dot.node(list_id, f"{k}[]")
-                    dot.edge(node_id, list_id)
-                    for it in v:
-                        cid = walk(it)
-                        dot.edge(list_id, cid)
+#esta funcion la mejoro y dio chat, porque la otra daba error jiji
+def render_ast(root, out="./output/ast.png"):
+    from dataclasses import is_dataclass, fields
+    dot = Digraph(graph_attr={"rankdir":"TB"})
+    counter = [0]
+    def id(): counter[0]+=1; return f"n{counter[0]}"
+    def walk(node):
+        nid = id()
+        label = type(node).__name__
+        dot.node(nid, label)
+        if is_dataclass(node):
+            for f in fields(node):
+                val = getattr(node, f.name)
+                if val is None: continue
+                cid = id(); dot.node(cid, f.name)
+                dot.edge(nid, cid)
+                if isinstance(val, list):
+                    for item in val:
+                        kid = walk(item)
+                        dot.edge(cid, kid)
                 else:
-                    cid = walk(v)
-                    dot.edge(node_id, cid, label=k)
+                    kid = walk(val)
+                    dot.edge(cid, kid)
         else:
-            # literal simple (int/str/bool) rara vez
-            pass
-        return node_id
-
+            vid = id(); dot.node(vid, str(node))
+            dot.edge(nid, vid)
+        return nid
     walk(root)
-    dot.render(out_png, format="png", cleanup=True)
-    return out_png
+    dot.render(out, format="png", cleanup=True)
+    return out
