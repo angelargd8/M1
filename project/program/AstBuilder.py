@@ -109,12 +109,12 @@ class AstBuilder(CompiscriptVisitor):
     def visitClassDeclaration(self, ctx):
         cname = ctx.Identifier(0).getText()
         base  = ctx.Identifier(1).getText() if ctx.Identifier(1) else None
-        methods, props = [], []
+        methods, properties = [], []
         for m in ctx.classMember():
             node = self.visit(m)
             if isinstance(node, FuncDecl):   methods.append(node)
-            elif isinstance(node, VarDecl):  props.append(node)
-        return ClassDecl(cname, base, methods, props)
+            elif isinstance(node, VarDecl):  properties.append(node)
+        return ClassDecl(cname, base, methods, properties)
 
     def visitClassMember(self, ctx):
         if ctx.functionDeclaration():   return self.visit(ctx.functionDeclaration())

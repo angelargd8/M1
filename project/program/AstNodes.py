@@ -39,7 +39,7 @@ class Block:
 
 @dataclass
 class Assign: 
-    target: str
+    target: Any
     expr: Any
 
 @dataclass

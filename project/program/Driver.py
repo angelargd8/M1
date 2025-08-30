@@ -4,6 +4,7 @@ from gen.CompiscriptLexer import CompiscriptLexer
 from gen.CompiscriptParser import CompiscriptParser
 from AstBuilder import AstBuilder
 from AstVisualization import render_ast
+from SemanticAnalyzer import SemanticAnalyzer
 
 def parse(argv):
     input_stream = FileStream(argv[1], encoding='utf-8')
@@ -30,8 +31,20 @@ def main(argv):
     path = "./output/ast.png"
     print("la foto de AST esta en la carpeta output:", path)
 
-    # tabla de simbolos - con ast o directamente sobre el parse tree recolectar declaraciones y crear ambitos, detectar redeclaraciones y forwars declarations
+    analyzer = SemanticAnalyzer()
+    analyzer.collect_signatures(ast)       # Pasada 1
+    errors = analyzer.check(ast)           # Pasada 2
 
+    if errors:
+        print("Errores semánticos:")
+        for e in errors:
+            print("  -", e)
+        # sys.exit(1)
+    else:
+        print("Chequeo semántico sin errores")
+
+    # tabla de simbolos - con ast o directamente sobre el parse tree recolectar declaraciones y crear ambitos, detectar redeclaraciones y forwars declarations
+    
     # sistema de tipos 
 
     # manejo de ambito
