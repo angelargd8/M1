@@ -53,40 +53,40 @@ python Driver.py program.cps
 
 2. Añadir **acciones/reglas semánticas** en este analizador sintáctico y **construir un  ́****arbol sintáctico, con una representación visual****.**
    1. **Sistema de Tipos**
-      * 🟠 Verificación de tipos en operaciones aritméticas (`+`, `-`, `*`, `/`) — los operandos deben ser de tipo `integer` o `float`.
-      * 🟠 Verificación de tipos en operaciones lógicas (`&&`, `||`, `!`) — los operandos deben ser de tipo `boolean`.
-      * 🟠 Compatibilidad de tipos en comparaciones (`==`, `!=`, `<`, `<=`, `>`, `>=`) — los operandos deben ser del mismo tipo compatible.
-      * 🟠 Verificación de tipos en asignaciones — el tipo del valor debe coincidir con el tipo declarado de la variable.
-      * 🟠 Inicialización obligatoria de constantes (`const`) en su declaración.
-      * 🟠 Verificación de tipos en listas y estructuras (si se soportan más adelante).
+      * 🟢 Verificación de tipos en operaciones aritméticas (`+`, `-`, `*`, `/`) — los operandos deben ser de tipo `integer` o `float`.
+      *  Verificación de tipos en operaciones lógicas (`&&`, `||`, `!`) — los operandos deben ser de tipo `boolean`.
+      * 🟢 Compatibilidad de tipos en comparaciones (`==`, `!=`, `<`, `<=`, `>`, `>=`) — los operandos deben ser del mismo tipo compatible.
+      * 🟢 Verificación de tipos en asignaciones — el tipo del valor debe coincidir con el tipo declarado de la variable.
+      *  Inicialización obligatoria de constantes (`const`) en su declaración.
+      * 🟢 Verificación de tipos en listas y estructuras (si se soportan más adelante).
    2. **Manejo de Ámbito**
-      * 🟠 Resolución adecuada de nombres de variables y funciones según el ámbito local o global.
-      * 🟠 Error por uso de variables no declaradas.
-      * 🟠 Prohibir redeclaración de identificadores en el mismo ámbito.
-      * 🟠 Control de acceso correcto a variables en bloques anidados.
-      * 🟠 Creación de nuevos entornos de símbolo para cada función, clase y bloque.
+      * 🟢 Resolución adecuada de nombres de variables y funciones según el ámbito local o global.
+      * 🟢 Error por uso de variables no declaradas.
+      * 🟢 Prohibir redeclaración de identificadores en el mismo ámbito.
+      * 🟢 Control de acceso correcto a variables en bloques anidados.
+      * 🟢 Creación de nuevos entornos de símbolo para cada función, clase y bloque.
    3. **Funciones y Procedimientos**
-      * 🟠 Validación del número y tipo de argumentos en llamadas a funciones (coincidencia posicional).
-      * 🟠 Validación del tipo de retorno de la función — el valor devuelto debe coincidir con el tipo declarado.
-      * 🟠 Soporte para funciones recursivas — verificación de que pueden llamarse a sí mismas.
-      * 🟠 Soporte para funciones anidadas y closures — debe capturar variables del entorno donde se definen.
-      * 🟠 Detección de múltiples declaraciones de funciones con el mismo nombre (si no se soporta sobrecarga).
+      * 🟢 Validación del número y tipo de argumentos en llamadas a funciones (coincidencia posicional).
+      * 🟢 Validación del tipo de retorno de la función — el valor devuelto debe coincidir con el tipo declarado.
+      * 🟢 Soporte para funciones recursivas — verificación de que pueden llamarse a sí mismas.
+      * 🟢 Soporte para funciones anidadas y closures — debe capturar variables del entorno donde se definen.
+      * 🟢 Detección de múltiples declaraciones de funciones con el mismo nombre (si no se soporta sobrecarga).
       
    4. **Control de Flujo**
-      * 🟠 Las condiciones en `if`, `while`, `do-while`, `for`, `switch` deben evaluar expresiones de tipo `boolean`.
-      * 🟠 Validación de que se puede usar `break` y `continue` sólo dentro de bucles.
-      * 🟠 Validación de que el `return` esté dentro de una función (no fuera del cuerpo de una función).
+      * 🟢 Las condiciones en `if`, `while`, `do-while`, `for`, `switch` deben evaluar expresiones de tipo `boolean`.
+      * 🟢 Validación de que se puede usar `break` y `continue` sólo dentro de bucles.
+      * 🟢 Validación de que el `return` esté dentro de una función (no fuera del cuerpo de una función).
    5. **Clases y Objetos**
-      * 🟠 Validación de existencia de atributos y métodos accedidos mediante `.` (dot notation).
-      * 🟠 Verificación de que el constructor (si existe) se llama correctamente.
-      * 🟠 Manejo de `this` para referenciar el objeto actual (verificar ámbito).
+      * 🟢 Validación de existencia de atributos y métodos accedidos mediante `.` (dot notation).
+      * 🟢 Verificación de que el constructor (si existe) se llama correctamente.
+      * 🟢 Manejo de `this` para referenciar el objeto actual (verificar ámbito).
    6. **Listas y Estructuras de Datos**
-      * 🟠 Verificación del tipo de elementos en listas.
-      * 🟠 Validación de índices (acceso válido a listas).
+      * 🟢 Verificación del tipo de elementos en listas.
+      * 🟢 Validación de índices (acceso válido a listas).
    7. **Generales**
-      * 🟠 Detección de código muerto (instrucciones después de un `return`, `break`, etc.).
-      * 🟠 Verificación de que las expresiones tienen sentido semántico (por ejemplo, no multiplicar funciones).
-      * 🟠 Validación de declaraciones duplicadas (variables, parámetros).
+      * 🟢 Detección de código muerto (instrucciones después de un `return`, `break`, etc.).
+      * 🟢 Verificación de que las expresiones tienen sentido semántico (por ejemplo, no multiplicar funciones).
+      * 🟢 Validación de declaraciones duplicadas (variables, parámetros).
 3. Implementar la recorrida de este árbol utilizando ANTLR Listeners o Visitors para evaluar las reglas semánticas que se ajusten al lenguaje.
 4. **Para los puntos anteriores, referentes a las reglas semánticas, deberá de escribir una batería de tests para validar casos exitosos y casos fallidos en cada una de las reglas mencionadas.**
    * Al momento de presentar su trabajo, esta batería de tests debe estar presente y será tomada en cuenta para validar el funcionamiento de su compilador.

@@ -36,14 +36,32 @@ class AstBuilder(CompiscriptVisitor):
         return VarDecl(name=name, type=t, is_const=True, init=init)
 
     def visitAssignment(self, ctx):
-        if ctx.Identifier():  # x = expr;
+        #cuantas expresiones hay en el nodo
+        exps = ctx.expression()
+
+        # primer caso: x = expr; asignacion simple
+        if ctx.Identifier() and len(exps) == 1:
             name = ctx.Identifier().getText()
-            return Assign(target=Var(name), expr=self.visit(ctx.expression(0)))
-        # obj.prop = expr;
-        obj = self.visit(ctx.expression(0))
-        prop = ctx.Identifier(0).getText() if ctx.Identifier(0) else ctx.Identifier().getText()
-        val  = self.visit(ctx.expression(1))
-        return Assign(target=Member(obj, prop), expr=val)
+            rhs = self.visit(exps[0])
+            return Assign(target=Var(name), expr=rhs)
+
+        #caso 2: asignacion a propiedad obj.prp = expr;
+        if ctx.Identifier() and len(exps) == 2:
+            obj = self.visit(exps[0])
+            prop = ctx.Identifier().getText()
+            rhs  = self.visit(exps[1])
+            return Assign(target=Member(obj, prop), expr=rhs)
+
+        #caso 3: otras formas de indexacion
+        if len(exps) >= 2:
+            lhs = self.visit(exps[0])
+            idx = self.visit(exps[1])
+            return Assign(target=Index(lhs, idx), expr=rhs)
+        
+        # Fallback por seguridad aunque no debería llegar aquí
+        name = ctx.Identifier().getText() if ctx.Identifier() else "<anon>"
+        rhs  = self.visit(exps[0]) if len(exps) else None
+        return Assign(target=Var(name), expr=rhs)
 
     def visitExpressionStatement(self, ctx):
         return ExprStmt(self.visit(ctx.expression()))
@@ -105,6 +123,7 @@ class AstBuilder(CompiscriptVisitor):
         ret = map_type(ctx.type_().getText()) if ctx.type_() else "void"
         body = self.visit(ctx.block())
         return FuncDecl(name, params, ret, body)
+    
 
     def visitClassDeclaration(self, ctx):
         cname = ctx.Identifier(0).getText()
@@ -115,6 +134,7 @@ class AstBuilder(CompiscriptVisitor):
             if isinstance(node, FuncDecl):   methods.append(node)
             elif isinstance(node, VarDecl):  properties.append(node)
         return ClassDecl(cname, base, methods, properties)
+    
 
     def visitClassMember(self, ctx):
         if ctx.functionDeclaration():   return self.visit(ctx.functionDeclaration())
@@ -128,15 +148,18 @@ class AstBuilder(CompiscriptVisitor):
     # assignmentExpr (labels)
     def visitAssignExpr(self, ctx):
         return Assign(self.visit(ctx.lhs), self.visit(ctx.assignmentExpr()))
+    
     def visitPropertyAssignExpr(self, ctx):
         return Assign(Member(self.visit(ctx.lhs), ctx.Identifier().getText()),
                       self.visit(ctx.assignmentExpr()))
+    
     def visitExprNoAssign(self, ctx):
         return self.visit(ctx.conditionalExpr())
 
     def visitTernaryExpr(self, ctx):
         if ctx.getChildCount() == 1:
             return self.visit(ctx.logicalOrExpr())
+        
         return Ternary(self.visit(ctx.logicalOrExpr()),
                        self.visit(ctx.expression(0)),
                        self.visit(ctx.expression(1)))
@@ -164,7 +187,7 @@ class AstBuilder(CompiscriptVisitor):
         while i < ctx.getChildCount():
             op  = ctx.getChild(i).getText()
             rhs = self.visit(ctx.getChild(i+1))
-            node = BinOp(node, op, rhs)   # <-- orden correcto: left, op, right
+            node = BinOp(node, op, rhs)
             i += 2
         return node
 
@@ -196,11 +219,14 @@ class AstBuilder(CompiscriptVisitor):
     def visitLeftHandSide(self, ctx):
         node = self.visit(ctx.primaryAtom())
         for suf in ctx.suffixOp():
+
             if isinstance(suf, CompiscriptParser.CallExprContext):
                 args = [self.visit(e) for e in suf.arguments().expression()] if suf.arguments() else []
                 node = Call(node, args)
+
             elif isinstance(suf, CompiscriptParser.IndexExprContext):
                 node = Index(node, self.visit(suf.expression()))
+
             elif isinstance(suf, CompiscriptParser.PropertyAccessExprContext):
                 node = Member(node, suf.Identifier().getText())
         return node
@@ -208,8 +234,10 @@ class AstBuilder(CompiscriptVisitor):
     # primaryAtom (labels)
     def visitIdentifierExpr(self, ctx):
         return Var(ctx.Identifier().getText())
+    
     def visitNewExpr(self, ctx):
         args = [self.visit(e) for e in ctx.arguments().expression()] if ctx.arguments() else []
         return New(ctx.Identifier().getText(), args)
+    
     def visitThisExpr(self, ctx):
         return This()

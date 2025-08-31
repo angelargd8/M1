@@ -27,7 +27,7 @@ def main(argv):
     # AST - Abstract Syntax Tree
     ast = AstBuilder().visit(tree)
     # print(ast)
-    ast_render = render_ast(ast, "./output/ast")
+    render_ast(ast, "./output/ast")
     path = "./output/ast.png"
     print("la foto de AST esta en la carpeta output:", path)
 
@@ -41,21 +41,10 @@ def main(argv):
             print("  -", e)
         # sys.exit(1)
     else:
-        print("Chequeo semántico sin errores")
+        print("Chequeo semántico sin errores!")
 
     # tabla de simbolos - con ast o directamente sobre el parse tree recolectar declaraciones y crear ambitos, detectar redeclaraciones y forwars declarations
     
-    # sistema de tipos 
-
-    # manejo de ambito
-
-    # funciones y procedimientos
-
-    #control de flujo
-
-    #clases y objetos
-
-    #listas y estructuras de datos
 
     # generales - deteccion de codigo muerto, verificacion del sentido semantico, declaraciones duplicadas
 
