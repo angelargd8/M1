@@ -4,10 +4,22 @@ from typing import Dict, Optional, Any, List
 # tabla de simbolo por alcance
 # estructura de datos que guarda informacion de los nombres de las variables que hay en un lenguaje de programacion
 
-#representa un tipo, para listas una name="list" s
+#representa un tipo, para listas una name="list" 
 @dataclass
 class TypeSymbol:
     name: str
+    # Para listas tipadas como: list<elem>
+    elem: Optional["TypeSymbol"] = None
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, TypeSymbol):
+            return False
+        return self.name == other.name and self.elem == other.elem
+
+    def __repr__(self) -> str:
+        if self.name == "list":
+            return f"list<{self.elem!r}>" if self.elem else "list<?>"
+        return self.name
 
 # representa una variable en la tabla de simbolos
 @dataclass
@@ -35,7 +47,7 @@ class FunctionSymbol:
 
 # representa un alcance en la tabla de simbolos
 # crea un scope con padre opcional
-class Scope: 
+class Scope:
     def __init__(self, name: str, parent: Optional['Scope'] = None):
         self.name = name
         self.parent = parent
@@ -54,7 +66,7 @@ class Scope:
         if self.parent:
             return self.parent.resolve(name)
         return None
-    
+
 # representa la tabla de simbolos completa   
 # # inicializa el scope global y registra los tipos base 
 #administra scopes y tipos, expone utilidades para definir y resolver simbolos
@@ -63,16 +75,17 @@ class SymbolTable:
         self.global_scope = Scope("global")
         self.current_scope = self.global_scope
 
+        # Tipos base conocidos
         self.types: Dict[str, TypeSymbol] = {
-            "int": TypeSymbol("int"),
-            "float": TypeSymbol("float"),
+            "int":    TypeSymbol("int"),
+            "float":  TypeSymbol("float"),
             "string": TypeSymbol("string"),
-            "bool": TypeSymbol("bool"),
-            "void": TypeSymbol("void"),
-            "list": TypeSymbol("list"), 
+            "bool":   TypeSymbol("bool"),
+            "void":   TypeSymbol("void"),
+            "list":   TypeSymbol("list"),
         }
 
-    # crea un nuevo scope, entra un nuevo scope hijo y lo devuelve
+   # crea un nuevo scope, entra un nuevo scope hijo y lo devuelve
     def push_scope(self, name: str):
         self.current_scope = Scope(name, self.current_scope)
         return self.current_scope
@@ -83,23 +96,41 @@ class SymbolTable:
             raise Exception("Error: No se puede salir del alcance global.")
         self.current_scope = self.current_scope.parent
 
+    # pop scope en otras palabras jaja
+    def exit_scope(self):
+        self.pop_scope()
+
     # resuelve un tipo
     def get_type(self, name: str) -> TypeSymbol:
+        """
+        Soporta:
+          - tipos base: int, float, string, bool, void, nombres de clase
+          - arreglos: T[], T[][]  -> list<T>, list<list<T>>
+        """
+        if name in self.types:
+            return self.types[name]
+
+        # soporte arreglos: int[], int[][]
+        if name.endswith("]"):
+            # contar dimensiones []
+            dim = 0
+            base = name
+            while base.endswith("[]"):
+                dim += 1
+                base = base[:-2]
+            # tipo base, puede ser primitivo o nombre de clase
+            base_t = self.get_type(base)
+            t = base_t
+            for _ in range(dim):
+                t = TypeSymbol("list", elem=t)
+            return t
+
+        # si es un nombre de clase ya registrado como tipo
         t = self.types.get(name)
         if t:
             return t
-        # soporte arreglos: int[], int[][]
-        if name.endswith("]"):
-            # normaliza todo lo que termine en [] como 'list'
-            return self.types["list"]
-        raise Exception(f"Error: Tipo '{name}' no definido.")
 
-    # pop scope en otras palabras jaja
-    def exit_scope(self):
-        if self.current_scope.parent is not None:
-            self.current_scope = self.current_scope.parent
-        else:
-            raise Exception("Error: No se puede salir del alcance global.")
+        raise Exception(f"Error: Tipo '{name}' no definido.")
 
     #define una variable en el scope actual
     def define_variable(self, var: VariableSymbol):
