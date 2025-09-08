@@ -53,6 +53,3 @@ if st.button("Run"):
     else:
         st.warning("Por favor, escribe algo de código antes de presionar Run.")
 
-# Espacio para mostrar el resultado o errores
-st.subheader("Salida")
-st.write("Aquí se mostrarán los resultados o errores después de ejecutar el código.")
