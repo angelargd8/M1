@@ -48,8 +48,13 @@ python -c "import antlr4; print('ANTLR runtime OK')"
 Correr el IDE
 Cambiar al shell root user 
 ```
-streamlit run IDE/app.py
+streamlit run app.py
 ```
+Como correr el programa en la consola:
+```
+python Driver.py program.cps
+```
+
 ---
 
 
