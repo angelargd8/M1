@@ -5,3 +5,4 @@ README.adoc
 README.md
 cache
 tests
+__pycache__/

@@ -20,6 +20,9 @@ def parse(argv):
 
     return tree
 
+def parse_text(text:str):
+    pass 
+
 
 def main(argv):
     

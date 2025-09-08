@@ -79,3 +79,5 @@ RUN adduser \
 USER ${UID}
 
 WORKDIR /program
+
+EXPOSE 8501
