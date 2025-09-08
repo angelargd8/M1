@@ -48,6 +48,7 @@ python -c "import antlr4; print('ANTLR runtime OK')"
 Correr el IDE
 Cambiar al shell root user 
 ```
+. .venv/bin/activate
 streamlit run app.py
 ```
 Como correr el programa en la consola:
