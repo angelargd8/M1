@@ -49,7 +49,7 @@ Cambiar al shell root user
 ```
 streamlit run IDE/app.py
 ```
-
+---
 
 
 ```
