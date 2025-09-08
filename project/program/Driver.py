@@ -20,8 +20,19 @@ def parse(argv):
 
     return tree
 
-def parse_text(text:str):
-    pass 
+def parse_text(text: str):
+    input_stream = InputStream(text)  # Usamos InputStream para texto en lugar de FileStream
+    lexer = CompiscriptLexer(input_stream)
+    stream = CommonTokenStream(lexer)
+    parser = CompiscriptParser(stream)
+    tree = parser.program()
+
+    errs = parser.getNumberOfSyntaxErrors()
+    if errs > 0:
+        print(f"Se encontraron {errs} errores de sintaxis.")
+        sys.exit(1)
+
+    return tree
 
 
 def main(argv):
