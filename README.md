@@ -20,6 +20,7 @@ Usar usuario root de docker
 ```
 docker exec -it --user root <container id> bash
 apt update
+apt install graphviz
 apt install python3.12-venv
 ```
 
