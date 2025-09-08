@@ -5,7 +5,8 @@
 1. **Construir y Ejecutar el Contenedor Docker:** Desde el directorio raíz, ejecuta el siguiente comando para construir la imagen y lanzar un contenedor interactivo:
 
 ```bash
-docker build --rm . -t csp-image && docker run --rm -ti -v "$(pwd)/program":/program csp-image
+docker build --rm . -t csp-image
+docker run -ti -v "$(pwd)/program":/program -p 8501:8501 csp-image
 ```
 
 volverlo a correr
@@ -14,28 +15,54 @@ cd ~/compis/M1/project
 docker run --rm -it -v "$(pwd)":/program -w /program csp-image
 ```
 
-activar en venv en wls:
+Abrir un nuevo cmd
+Usar usuario root de docker
+```
+docker exec -it --user root <container id> bash
+apt update
+apt install graphviz
+apt install python3.12-venv
+```
+
+Regresar al shell de appuser
+activar en venv en el container:
 ```
 python3 -m venv .venv
 . .venv/bin/activate
+```
+Version de python:
+```
+Python 3.12.3
 ```
 
 instalar antlr:
 ```
 python -m pip install --upgrade pip
-pip install "antlr4-python3-runtime==4.13.1"
+pip install -r requirements.txt 
 
 #comprobar que se instalo:
 which python
 python -c "import antlr4; print('ANTLR runtime OK')"
 ```
 
+Correr el IDE
+Cambiar al shell root user 
+```
+streamlit run IDE/app.py
+```
+---
+
+
 ```
 docker run --rm -u "$UIDGID" -v "$(pwd)":/work -w /work csp-image bash -lc 'java -jar /usr/local/lib/antlr-4.13.1-complete.jar -Dlanguage=Python3 -visitor -no-listener -o program/gen program/Compiscript.g4'
 ```
 
+
+
 Como correr el programa:
 python Driver.py program.cps
+
+
 
 
 ## 📋 Requerimientos
