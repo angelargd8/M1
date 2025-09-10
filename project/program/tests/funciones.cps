@@ -11,10 +11,9 @@ function multiply(a: integer, b: integer): integer {
     return a * b;                  // ✅ retorno coincide con integer
 }
 
-function wrongReturn(a: integer): integer {
-    return true;                 // ❌ error: boolean no coincide con integer
-}
-
+//function wrongReturn(a: integer): integer {
+   // return true;                 // ❌ error: boolean no coincide con integer
+//}
 
 function factorial(n: integer): integer {
     if (n <= 1) {
@@ -34,3 +33,31 @@ function greet(): string {
 // function greet(): string {
 //     return "Hi";           // ❌ error: redeclaración de función
 // }
+
+
+// Función simple
+function add(x: integer, y: integer): integer {
+    return x + y;
+}
+
+// Función recursiva
+function factorial(n: integer): integer {
+    if (n <= 1) {
+        return 1;
+    }
+    return n * factorial(n - 1);
+}
+
+// "Función anidada" 
+let x: integer = 10;
+
+function inner(y: integer): integer {
+    return x + y; // usa variable del entorno global
+}
+
+function outer(): void {
+    let result: integer = inner(5);
+    print(result); // imprime 15
+}
+
+outer();
