@@ -15,7 +15,7 @@ st.title("IDE")
 st.write("Escribe tu código en el área de entrada, presiona **Run** para analizarlo, y revisa el resultado o los errores en la salida.")
 
 # Área de entrada para el código
-code_input = st.text_area("Escribe tu código aquí:", height=300, placeholder="let x = 10;\nlet y = 20;\nprint(x + y);")
+code_input = st.text_area("Escribe tu código aquí:", height=300, placeholder="x = 10;\n")
 
 # Botón para ejecutar el código
 if st.button("Run"):
@@ -43,7 +43,9 @@ if st.button("Run"):
 
                 if semantic_errors:
                     st.error("Errores semánticos encontrados:")
+                    st.write(f"- {semantic_errors}")
                     for error in semantic_errors:
+                        # st.error(f"- {error}")
                         st.write(f"- {error}")
                 else:
                     st.success("¡Chequeo semántico sin errores!")
@@ -53,3 +55,6 @@ if st.button("Run"):
     else:
         st.warning("Por favor, escribe algo de código antes de presionar Run.")
 
+# Espacio para mostrar el resultado o errores
+st.subheader("Salida")
+st.write("Aquí se mostrarán los resultados o errores después de ejecutar el código.")
