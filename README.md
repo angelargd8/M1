@@ -45,7 +45,13 @@ which python
 python -c "import antlr4; print('ANTLR runtime OK')"
 ```
 
-Correr el IDE
+Correr el IDE:
+- requerimientos: 
+tener instalado streamlit:
+```
+pip install streamlit
+```
+
 Cambiar al shell root user 
 ```
 . .venv/bin/activate
