@@ -204,13 +204,24 @@ class AstBuilder(CompiscriptVisitor):
     def visitLiteralExpr(self, ctx):
         if ctx.Literal():
             txt = ctx.Literal().getText()
-            if txt.startswith('"'): return StringLiteral(txt[1:-1])
-            return IntLiteral(int(txt))
-        if ctx.getText() == "null":  return NullLiteral()
-        if ctx.getText() == "true":  return BooleanLiteral(True)
-        if ctx.getText() == "false": return BooleanLiteral(False)
-        if ctx.arrayLiteral():       return self.visit(ctx.arrayLiteral())
+            if txt.startswith('"'):
+                return StringLiteral(txt[1:-1])  # quita comillas
+            elif "." in txt:
+                return FloatLiteral(float(txt))
+            else:
+                return IntLiteral(int(txt))
+        
+        if ctx.getText() == "null":
+            return NullLiteral()
+        if ctx.getText() == "true":
+            return BooleanLiteral(True)
+        if ctx.getText() == "false":
+            return BooleanLiteral(False)
+        if ctx.arrayLiteral():
+            return self.visit(ctx.arrayLiteral())
+        
         return None
+
 
     def visitArrayLiteral(self, ctx):
         return ListLiteral([self.visit(e) for e in ctx.expression()])
