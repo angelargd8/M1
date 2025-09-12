@@ -1,5 +1,19 @@
 # [M1] Fase de Compilación: Análisis Semántico
 
+## Descripción del proyecto:
+El proyecto es un compilador para el lenguaje de compiscript, desarrollado en python y usando ANTLR para el análisis sintáctico y léxico.  
+Se tiene un archivo de compiscript el archivo lo parsea, se construye el AST, lo analiza semánticamente y reporta los errores 
+
+- Gramáticas ANTLR (.g4) para definir la sintaxis del lenguaje. 
+- Archivos generados por ANTLR (Lexer, Parser, Visitor, Listener) para procesar el código fuente. 
+- Un AST (Árbol de Sintaxis Abstracta) construido con clases dataclass en AstNodes.py. 
+- AstBuilder que transforma el árbol de ANTLR en el AST propio. 
+- SemanticAnalyzer que realiza el chequeo semántico: verifica tipos, ámbitos, herencia, declaraciones, y reporta errores semánticos. 
+- Una SymbolTable que gestiona los símbolos (variables, funciones, tipos) y los distintos scopes. 
+- Visualización del AST con Graphviz . 
+- Driver: parsea el código, construye el AST, lo visualiza y ejecuta el análisis semántico. 
+
+
 ## 🧰 Instrucciones de Configuración
 
 1. **Construir y Ejecutar el Contenedor Docker:** Desde el directorio raíz, ejecuta el siguiente comando para construir la imagen y lanzar un contenedor interactivo:
